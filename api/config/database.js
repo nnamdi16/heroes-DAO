@@ -1,5 +1,5 @@
 //require mongoose module
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 //require chalk module
 var chalk = require("chalk");
@@ -14,7 +14,8 @@ var termination = chalk.bold.magenta;
 
 //export this function by server.js
 module.exports = function() {
-  mongoose.connect(dbURL);
+  mongoose.set("useCreateIndex", true);
+  mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true });
   mongoose.connection.on("connected", function() {
     console.log(connected("Mongoose default connection is open to ", dbURL));
   });
@@ -23,14 +24,14 @@ module.exports = function() {
       error("Mongoose default connection has occurred " + err + " error")
     );
   });
-  mongoose.connection("disconnected", function() {
+  mongoose.connection.on("disconnected", function() {
     console.log(disconnected("Mongoose default connection is disconnected"));
   });
 
   process.on("SIGINT", function() {
-  mongoose.connection.close(function() {
-    console.log(
-      termination(
+    mongoose.connection.close(function() {
+      console.log(
+        termination(
           "Mongoose default connection is disconnected due to application termination"
         )
       );
