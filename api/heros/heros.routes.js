@@ -5,11 +5,13 @@ const {
   updateHero,
   removeHero
 } = require("./heros.controller");
+const express = require("express");
+const router = express.Router();
 
-module.exports = function(router) {
-  router.post("/create", createHero);
-  router.get("/get", getHeros);
-  router.get("/get/:name", getHero);
-  // router.put("/update/:id", updateHero);
-  router.delete("/remove/:id", removeHero);
-};
+router.route("/create").post(createHero);
+router.route("/get").get(getHeros);
+router.route("/get/:name").get(getHero);
+router.put("/update/:id", updateHero);
+router.delete("/remove/:id", removeHero);
+
+module.exports = router;
