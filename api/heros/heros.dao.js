@@ -7,25 +7,28 @@ const { model } = require("mongoose");
 const heroSchema = require("./heros.model");
 
 heroSchema.statics = {
-
-  create: async function(data, cb) {
-    const hero = new this(data);
-    await hero.save(cb);
+  createHero: function(data, cb) {
+    const hero = new HerosModel(data);
+    hero.save(cb);
   },
   get: async function(query, cb) {
-    await this.find(query, cb);
+    await HerosModel.find(query, cb);
   },
   getByName: async function(query, cb) {
-    console.log("We are here for you");
-    await this.find(query, cb);
+    await HerosModel.findOne(query, cb);
   },
   update: async function(query, updateData, cb) {
-    await this.findOneAndUpdate(query, { $set: updateData }, { new: true }, cb);
+    await HerosModel.findOneAndUpdate(
+      query,
+      { $set: updateData },
+      { new: true },
+      cb
+    );
   },
   delete: async function(query, cb) {
-    await this.findOneAndDelete(query, cb);
+    await HerosModel.findOneAndDelete(query, cb);
   }
 };
 
-const herosModel = model("Heros", heroSchema);
-module.exports = herosModel;
+const HerosModel = model("Heros", heroSchema);
+module.exports = HerosModel;
