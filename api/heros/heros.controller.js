@@ -1,18 +1,18 @@
 const {
-  create,
+  createHero,
   getByName,
   get,
   update,
   delete: deleteHero
 } = require("./heros.dao");
 
-exports.createHero = async function(req, res, next) {
+exports.createHero = function(req, res, next) {
   const { name, description } = req.body;
   const hero = {
     name,
     description
   };
-  await create(hero, function(err, hero) {
+  createHero(hero, function(err, hero) {
     if (err) {
       res.json({
         error: err
@@ -25,7 +25,8 @@ exports.createHero = async function(req, res, next) {
 };
 
 exports.getHero = async function(req, res, next) {
-  const { name } = req.params.name;
+  const name = req.params.name;
+ 
   await getByName({ name }, function(err, heros) {
     if (err) {
       res.json({
